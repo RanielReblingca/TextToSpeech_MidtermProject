@@ -4,50 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Text to Voice and Voice to Text</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-
-<style>
-  body {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #8e2de2, #4a00e0);
-    background-size: cover;
-    background-repeat: no-repeat;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #fff;
-  }
-
-  .container {
-    text-align: center;
-    padding: 20px;
-    background-color: rgba(0, 0, 0, 0.6);
-    border-radius: 10px;
-  }
-
-  h1 {
-    margin-top: 0;
-  }
-
-  textarea {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-  }
-
-  select,
-  button {
-    padding: 10px;
-    margin: 5px;
-  }
-
-  #speechResult {
-    margin-top: 20px;
-  }
-</style>
 
 </html>
 
@@ -55,16 +13,9 @@
   <div class="container">
     <h1>Text to Voice and Voice to Text</h1>
 
-    <!-- Text to Voice -->
     <textarea id="textToSpeech" rows="4" cols="50">Type your text here...</textarea>
-    <select id="voiceSelect">
-      <option value="default">Default</option>
-      <option value="male">Male</option>
-      <option value="female">Female</option>
-    </select>
     <button onclick="textToSpeech()">Convert to Speech</button>
 
-    <!-- Voice to Text -->
     <button onclick="startSpeechRecognition()">Start Listening</button>
     <select id="resultVoiceSelect">
       <option value="default">Default</option>
@@ -73,75 +24,12 @@
     </select>
     <p id="speechResult"></p>
 
-    <script>
-      // Text to Speech
-      function textToSpeech() {
-        var text = document.getElementById('textToSpeech').value;
-        var voiceSelect = document.getElementById('voiceSelect');
-        var selectedVoice = voiceSelect.value;
 
-        var speech = new SpeechSynthesisUtterance();
-        speech.text = text;
-
-        // Select voice based on user choice
-        if (selectedVoice === 'male') {
-          speech.voice = getVoiceByGender('male');
-        } else if (selectedVoice === 'female') {
-          speech.voice = getVoiceByGender('female');
-        }
-
-        window.speechSynthesis.speak(speech);
-      }
-
-      // Function to get voice by gender
-      function getVoiceByGender(gender) {
-        var voices = window.speechSynthesis.getVoices();
-        for (var i = 0; i < voices.length; i++) {
-          if (voices[i].name.includes(gender)) {
-            return voices[i];
-          }
-        }
-        // If no voice with specified gender found, return the default voice
-        return voices[0];
-      }
-
-      // Voice to Text
-      var recognition = new webkitSpeechRecognition() || new SpeechRecognition();
-      recognition.continuous = true;
-      recognition.interimResults = true;
-      recognition.lang = 'en-US';
-
-      recognition.onresult = function (event) {
-        var interimTranscript = '';
-        for (var i = event.resultIndex; i < event.results.length; ++i) {
-          if (event.results[i].isFinal) {
-            var resultVoiceSelect = document.getElementById('resultVoiceSelect');
-            var selectedResultVoice = resultVoiceSelect.value;
-            var resultText = event.results[i][0].transcript;
-
-            // Adjust voice of recognition result based on user choice
-            if (selectedResultVoice === 'male') {
-              resultText = resultText.replace(/(\.|!|\?)$/, ''); // Remove punctuation from the end
-              resultText += ' (Male)';
-            } else if (selectedResultVoice === 'female') {
-              resultText = resultText.replace(/(\.|!|\?)$/, ''); // Remove punctuation from the end
-              resultText += ' (Female)';
-            }
-
-            document.getElementById('speechResult').textContent = resultText;
-          } else {
-            interimTranscript += event.results[i][0].transcript;
-            document.getElementById('speechResult').textContent = interimTranscript;
-          }
-        }
-      };
-
-      function startSpeechRecognition() {
-        recognition.start();
-      }
-    </script>
-
+  <script src="script.js"></script>
 </body>
 <header>Created by: Reblingca Raniel</header>
 
+
+
 </html>
+
